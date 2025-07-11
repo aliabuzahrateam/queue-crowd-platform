@@ -1,0 +1,85 @@
+#version: "3.8"
+services:
+  auth-service:
+    build: ./auth-service
+    env_file: ./auth-service/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  queue-service:
+    build: ./queue-service
+    env_file: ./queue-service/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+  branch-service:
+    build: ./branch-service
+    env_file: ./branch-service/.env
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db
+  notification-service:
+    build: ./notification-service
+    env_file: ./notification-service/.env
+    ports:
+      - "3003:3003"
+    depends_on:
+      - db
+  feedback-service:
+    build: ./feedback-service
+    env_file: ./feedback-service/.env
+    ports:
+      - "3004:3004"
+    depends_on:
+      - db
+  reporting-service:
+    build: ./reporting-service
+    env_file: ./reporting-service/.env
+    ports:
+      - "3005:3005"
+    depends_on:
+      - db
+  crowding-service:
+    build: ./crowding-service
+    env_file: ./crowding-service/.env
+    ports:
+      - "3006:3006"
+    depends_on:
+      - db
+  session-manager:
+    build: ./session-manager
+    env_file: ./session-manager/.env
+    ports:
+      - "3007:3007"
+    depends_on:
+      - db
+  access-controller:
+    build: ./access-controller
+    env_file: ./access-controller/.env
+    ports:
+      - "3008:3008"
+    depends_on:
+      - db
+  rule-engine:
+    build: ./rule-engine
+    env_file: ./rule-engine/.env
+    ports:
+      - "3009:3009"
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: main_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: 
