@@ -118,5 +118,38 @@ services:
       - ./dotnet-app:/app
     working_dir: /app
     command: ["sleep", "infinity"]
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:latest
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:latest
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
 volumes:
-  pgdata: 
+  pgdata:
+  redis_data:
+  elasticsearch_data: 
